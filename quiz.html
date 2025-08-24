@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Water Knowledge Quiz - AQUA CARE{% endblock %}
+
+{% block content %}
+<div class="container quiz-container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('dashboard', user_id=user_id) }}">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="header-section">
+        <h2><i class="fas fa-brain"></i> Water & Hygiene Knowledge Quiz</h2>
+        <p>Test your understanding of water conservation and hygiene practices</p>
+    </div>
+    
+    <form method="POST" class="quiz-form">
+        <!-- Fixed radio button naming to use question index instead of option index -->
+        {% for question in questions %}
+        {% set question_index = loop.index0 %}
+        <div class="question-card">
+            <div class="question-header">
+                <span class="question-number">{{ loop.index }}</span>
+                <h3>{{ question.q }}</h3>
+            </div>
+            
+            <div class="options-grid">
+                {% for option in question.options %}
+                <label class="option-label">
+                    <input type="radio" name="q{{ question_index }}" value="{{ option }}" required>
+                    <span class="option-text">{{ option }}</span>
+                    <span class="checkmark"></span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary quiz-submit">
+            <i class="fas fa-check"></i>
+            Submit Quiz
+        </button>
+    </form>
+</div>
+{% endblock %}

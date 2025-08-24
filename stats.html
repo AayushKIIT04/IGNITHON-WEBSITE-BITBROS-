@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Your Impact - AQUA CARE{% endblock %}
+
+{% block content %}
+<div class="container stats-container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('dashboard', user_id=user_id) }}">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="header-section">
+        <h2><i class="fas fa-chart-bar"></i> Your Impact Dashboard</h2>
+        <p>Track your contributions to water conservation</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ reports|length }}</h3>
+                <p>Reports Submitted</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ (scores|max) if scores else 0 }}</h3>
+                <p>Best Quiz Score</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ avg_score }}</h3>
+                <p>Average Quiz Score</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ locality_count|length }}</h3>
+                <p>Areas Covered</p>
+            </div>
+        </div>
+    </div>
+    
+    {% if reports %}
+    <div class="charts-section">
+        <div class="chart-container">
+            <h3>Reports by Location</h3>
+            <canvas id="locationChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Problem Types</h3>
+            <canvas id="problemChart"></canvas>
+        </div>
+    </div>
+    {% endif %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Location Chart
+        const locationCtx = document.getElementById('locationChart').getContext('2d');
+        new Chart(locationCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ locality_count.keys()|list|tojson }},
+                datasets: [{
+                    label: 'Reports per Location',
+                    data: {{ locality_count.values()|list|tojson }},
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        
+        // Problem Type Chart
+        const problemCtx = document.getElementById('problemChart').getContext('2d');
+        new Chart(problemCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Public Infrastructure', 'Private Property'],
+                datasets: [{
+                    data: [{{ problem_type_count.Public }}, {{ problem_type_count.Private }}],
+                    backgroundColor: ['rgba(16, 185, 129, 0.8)', 'rgba(245, 158, 11, 0.8)'],
+                    borderColor: ['rgba(16, 185, 129, 1)', 'rgba(245, 158, 11, 1)'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</div>
+{% endblock %}

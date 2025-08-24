@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results - AQUA CARE{% endblock %}
+
+{% block content %}
+<div class="container results-container">
+    <div class="score-header">
+        <div class="score-circle">
+            <span class="score-number">{{ score }}</span>
+            <span class="score-total">/ {{ total }}</span>
+        </div>
+        <h2>Quiz Complete!</h2>
+        <p class="score-message">
+            {% if score == total %}
+                Excellent! You're a water conservation expert!
+            {% elif score >= total * 0.8 %}
+                Great job! You have strong knowledge about water and hygiene.
+            {% elif score >= total * 0.6 %}
+                Good work! Keep learning about water conservation.
+            {% else %}
+                Keep studying! Every expert was once a beginner.
+            {% endif %}
+        </p>
+    </div>
+    
+    <div class="results-grid">
+        <!-- Fixed enumerate usage by using loop.index instead -->
+        {% for result in results %}
+        <div class="result-card {{ 'correct' if result.is_correct else 'incorrect' }}">
+            <div class="result-header">
+                <span class="question-number">{{ loop.index }}</span>
+                <i class="fas fa-{{ 'check-circle' if result.is_correct else 'times-circle' }}"></i>
+            </div>
+            <h4>{{ result.question }}</h4>
+            <div class="answer-info">
+                <p><strong>Your answer:</strong> {{ result.selected or 'Not answered' }}</p>
+                <p><strong>Correct answer:</strong> {{ result.correct }}</p>
+                <p class="explanation">{{ result.explanation }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{{ url_for('quiz', user_id=user_id) }}" class="btn btn-secondary">
+            <i class="fas fa-redo"></i>
+            Take Quiz Again
+        </a>
+        <a href="{{ url_for('dashboard', user_id=user_id) }}" class="btn btn-primary">
+            <i class="fas fa-home"></i>
+            Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

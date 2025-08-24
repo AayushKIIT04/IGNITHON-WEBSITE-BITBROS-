@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Water Conservation Tips - AQUA CARE{% endblock %}
+
+{% block content %}
+<div class="container tips-container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('dashboard', user_id=user_id) }}">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="header-section">
+        <h2><i class="fas fa-lightbulb"></i> Water Conservation & Hygiene Tips</h2>
+        <p>Practical advice for sustainable water use and better health</p>
+    </div>
+    
+    <div class="tips-grid">
+        {% for category, tips in tips_categories.items() %}
+        <div class="tips-category">
+            <h3>
+                <i class="fas fa-{{ 'tint' if 'Water' in category else 'hands-wash' if 'Hygiene' in category else 'users' }}"></i>
+                {{ category }}
+            </h3>
+            <ul class="tips-list">
+                {% for tip in tips %}
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    {{ tip }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="impact-message">
+        <i class="fas fa-heart"></i>
+        <p>Every small action counts towards achieving SDG 6: Clean Water and Sanitation for All!</p>
+    </div>
+</div>
+{% endblock %}

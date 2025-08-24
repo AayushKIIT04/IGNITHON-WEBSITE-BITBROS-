@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AQUA CARE{% endblock %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <div class="header-section">
+        <h2>Welcome back, {{ user.name }}!</h2>
+        <p>Ready to make a difference in water conservation?</p>
+    </div>
+    
+    <div class="dashboard-grid">
+        <a href="{{ url_for('report', user_id=user_id) }}" class="dashboard-card report-card">
+            <div class="card-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Report Water Issues</h3>
+            <p>Report leaks, wastage, or contamination in your area</p>
+            <div class="card-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('tips', user_id=user_id) }}" class="dashboard-card tips-card">
+            <div class="card-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Conservation Tips</h3>
+            <p>Learn practical ways to save water and improve hygiene</p>
+            <div class="card-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('quiz', user_id=user_id) }}" class="dashboard-card quiz-card">
+            <div class="card-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3>Knowledge Quiz</h3>
+            <p>Test your water and hygiene knowledge</p>
+            <div class="card-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('stats', user_id=user_id) }}" class="dashboard-card stats-card">
+            <div class="card-icon">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3>Your Impact</h3>
+            <p>View your contributions and progress</p>
+            <div class="card-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
